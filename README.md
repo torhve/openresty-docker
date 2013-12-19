@@ -42,10 +42,10 @@ Installation help for Ubuntu will be provided, if you use a different Linux dist
 
 Installation of [Docker][1] on Ubuntu with kernel 3.8 or newer:
 
-    sudo sh -c "wget -qO- https://get.docker.io/gpg | apt-key add -"
+    sudo curl https://get.docker.io/gpg | sudo apt-key add -
 
     sudo sh -c "echo deb http://get.docker.io/ubuntu docker main\
-    > /etc/apt/sources.list.d/docker.list"
+    echo deb "echo deb http://get.docker.io/ubuntu docker main" | sudo tee /etc/apt/sources.d/docker.list
     sudo apt-get update
     sudo apt-get install lxc-docker
     
@@ -64,9 +64,9 @@ Installation of [Docker][1] on Ubuntu with kernel 3.8 or newer:
     ENV REFRESHED_AT 2013-12-12
 
     RUN    echo "deb-src http://archive.ubuntu.com/ubuntu precise main" >> /etc/apt/sources.list
-    RUN    sed 's/main$/main universe/' -i /etc/apt/sources.list
+    RUN    sed -i /etc/apt/sources.list 's/main$/main universe/'
     RUN    apt-get update
-    RUN    apt-get upgrade -y
+    RUN    apt-get -y upgrade
     RUN    apt-get -y install wget vim git libpq-dev
 
     # Openresty (Nginx)
@@ -83,7 +83,8 @@ Installation of [Docker][1] on Ubuntu with kernel 3.8 or newer:
 ### Build the image using our Dockerfile
     
     sudo docker build -t="torhve/openresty" .
-This will create the contained environment which we then can re-use and launch for many projects later.
+This will create the contained environment which we then can re-use and launch for many projects later. The `-t` flag is the name for the image, you can choose your own name here if you want, so you can identify the image by name later.
+
 
 ### Create a simple nginx.conf for the project
 
@@ -138,9 +139,9 @@ Now we can start the docker image that we built. We will map the directory from 
     ngx.exit(200)
     EOF
 
-The nginx web server should now be serving content, lets confirm with wget:
+The nginx web server should now be serving content, lets confirm with `curl`:
 
-    wget -q  -O- http://127.0.0.1:8080/
+    curl http://127.0.0.1:8080/
 Which should print:
     
     Hello World!
