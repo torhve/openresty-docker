@@ -10,9 +10,9 @@ Why [Docker][1] ?
 From their web page:
 > Docker is an open-source project to easily create lightweight, portable, self-sufficient containers from any application. The same container that a developer builds and tests on a laptop can run at scale, in production, on VMs, bare metal, OpenStack clusters, public clouds and more. 
 
-This means that we have an excellent way to reproduce and contain a development setup for the Lua project we will be creating that will not mess up your system the way most app package managers like npm, luarocks, virtualenv + easy_install/pip like to mess up everything for you in a not really non-isolated manner.
+This means that we have an excellent way to reproduce and contain a development setup for the Lua project we will be creating that will not mess up your system the way most application package managers like npm, luarocks, virtualenv + easy_install/pip likes to do. Another major drawback with most application package managers are that they are not good at creating isolated enviroments, so you will have version conflicts or breakage if application1 wants a different version of a library than application2. Or like invirtualenv's case it will still be tied to the system in some ways.
 
-The goal of this guide is to end up in this setup:
+The goal of this guide is to end up in this type of setup:
 
     Internets => nginx:80
                   |--> docker (app1):8080 
@@ -38,7 +38,7 @@ A Dockerfile is:
 
 We will create a Dockerfile which sets up a Ubuntu with [Openresty][2].
 
-Installation help for Ubuntu will be provided, if you use a different Linux distribution please find instrunctions here: <http://www.docker.io/gettingstarted/#h_installation>
+Installation help for Ubuntu will be provided, if you use a different Linux distribution please find instructions here: <http://www.docker.io/gettingstarted/#h_installation>
 
 Installation of [Docker][1] on Ubuntu with kernel 3.8 or newer:
 
@@ -121,7 +121,7 @@ This will create the contained environment which we then can re-use and launch f
 
     EOF
     
-Now we can start the docker image that we built. We will map the directory from the host to the container so you can continue to use your favorite editor and development environment from the host.
+Now we can start the docker image that we built. We will map the directory from the host to the container so you can continue to use your favorite editor and development environment from the host. Note that the nginx.conf and app lives outside the container, so you can re-use this container image for all of your lua projects.
 
 ### Run our newly created Docker image
 
@@ -168,7 +168,14 @@ Basically we just proxy every request to the container using the built in proxy 
 
 To extend/improve this setup you could set the root directory to be the same directory as the helloproj and then serve static content using the host nginx, and let the contained nginx only worry about dynamic content. It could also be extended to cache requests using one of the many Nginx caching techniques.
 
-The source for this guide is available in a [GitHub repository][3]. Please fork and send changes if you have suggestions for improvement.
+To start and keep your containers running you can use many different techniques, some viable solutions are systemd, supervisord, upstart, or just a good old initscript.
+
+### Potential pitfalls
+
+Running two Nginxes will have an impact on performance compared to running a single app on a single front facing Nginx, because every request will be proxied. This is similar to what many app servers will also have to do in some ways, but usually one of the advantages of Lua (and php!) is that you can run your application directly inside the webserver without any proxying. So for instance if you have an application that handles large uploads you need to think about how you want to handle that. 
+
+
+The source for this guide is available in a [GitHub repository][3]. Please fork and send changes if you have suggestions or improvements.
 
 
   [1]: http://docker.io/ "Docker"
