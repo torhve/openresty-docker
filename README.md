@@ -83,7 +83,7 @@ Installation of [Docker][1] on Ubuntu with kernel 3.8 or newer:
 ### Build the image using our Dockerfile
     
     sudo docker build -t="torhve/openresty" .
-This will create the contained environment which we then can re-use and launch for many projects later. The `-t` flag is the name for the image, you can choose your own name here if you want, so you can identify the image by name later.
+This will create the contained environment which we then can re-use and launch for many projects later. The `-t` flag is the name for the image, you can choose your own name here if you want, to help you refer to the image by name later. The name mostly matters if you want to share/submit your docker image to repositories, see: <http://docs.docker.io/en/latest/use/workingwithrepository/> for more information about that.
 
 
 ### Create a simple nginx.conf for the project
