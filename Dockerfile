@@ -1,11 +1,11 @@
 # Dockerfile for openresty
-# VERSION   0.0.2
+# VERSION   0.0.3
 
-FROM ubuntu:12.04
+FROM ubuntu:14.04
 MAINTAINER Tor Hveem <tor@hveem.no>
-ENV REFRESHED_AT 2013-12-12
+ENV REFRESHED_AT 2014-05-10
 
-RUN    echo "deb-src http://archive.ubuntu.com/ubuntu precise main" >> /etc/apt/sources.list
+RUN    echo "deb-src http://archive.ubuntu.com/ubuntu trusty main" >> /etc/apt/sources.list
 RUN    sed 's/main$/main universe/' -i /etc/apt/sources.list
 RUN    apt-get update
 RUN    apt-get upgrade -y
