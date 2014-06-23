@@ -5,6 +5,7 @@ FROM ubuntu:14.04
 MAINTAINER Tor Hveem <tor@hveem.no>
 ENV REFRESHED_AT 2014-05-10
 
+ENV    DEBIAN_FRONTEND noninteractive
 RUN    echo "deb-src http://archive.ubuntu.com/ubuntu trusty main" >> /etc/apt/sources.list
 RUN    sed 's/main$/main universe/' -i /etc/apt/sources.list
 RUN    apt-get update
